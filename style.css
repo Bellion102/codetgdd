@@ -36,7 +36,7 @@ a {
 }
 
 nav {
-  background-color: rgb(0, 0, 0);
+  background-color: #FFD400;
 }
 
 nav ul {
@@ -47,7 +47,7 @@ nav ul {
 
 nav ul li,
 a {
-  color: white;
+  color: rgb(0, 0, 0);
   font-size: 16px;
 }
 
@@ -90,7 +90,7 @@ nav ul li:nth-child(4) button {
   padding: 0 8px;
   cursor: pointer;
   background-color: transparent;
-  color: white;
+  color: rgb(0, 0, 0);
   border: 1px solid rgb(145, 143, 143);
   border-radius: 5px;
   transition: all 0.5s ease;
@@ -373,8 +373,8 @@ select {
   margin: 0 auto;
 }
 .bigbanner a{
-  width: 1920px;
-  min-width: 1920px;
+  /* width: 1920px; */
+  /* min-width: 1920px; */
   display: block;
   overflow: hidden;
   margin: 0 auto;
@@ -470,9 +470,7 @@ select {
 } */
 
 /* ----------------------- slider product -------------------------- */
-.slider-product-one{
-  
-}
+
 
 .slider-product-one-content {
   background-color: #FF8800;
@@ -870,7 +868,7 @@ color: #FB6E2E;
   color: black;
   margin-top: 30px;
   background-color: #ffffff;
-  height: 100px;
+  padding-bottom: 90px;
 }
 
 .list-footer-item li span, i{
@@ -883,11 +881,47 @@ color: #FB6E2E;
   position: relative;
   list-style: none;
   justify-content: space-between;
-  margin-top: 20px;
+  margin: 0px 0px;
+  padding: 0px 10px;
 }
 
-
-.list-footer-item {
-  /* position: absolute; */
+.list-footer-item{
+  margin-top: 23px;
+  margin-left: 19px;
+  margin-bottom: 0px;
 }
+
+.list-footer-item li {
+  margin: 15px 0px;
+}
+
+.list-footer-item li:hover a span{
+ color: rgb(47,128,237);
+}
+.list-footer-item-logo{
+  display: flex;
+  justify-content: space-between;
+}
+.list-footer-item-logo li{
+  margin: 0px 10px;
+  
+}
+.list-footer-item-logo li img{
+  margin-bottom: -3px;
+  margin-left: -7px;
+  width: 18px;
+  height: 18px;
+}
+
+.list-product-item-logo > img{
+  margin-left: 10px;
+}
+
+.footer-text{
+  margin: 12px -70px;
+}
+.footer-text span{
+  font-size: 10px;
+}
+
 
