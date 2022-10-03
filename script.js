@@ -28,46 +28,44 @@ leftbtntwo.addEventListener("click", function () {
   ).style.right = index * 100 + "%";
 });
 
-setInterval(
-  function () {
-    index = index + 1;
-    if (index > imgNumber.length - 1) {
-      index = 0;
-    }
+setInterval(function () {
+  index = index + 1;
+  if (index > imgNumber.length - 1) {
+    index = 0;
+  }
 
-    document.querySelector(
-      ".slider-product-one-content-items-content"
-    ).style.right = index * 100 + "%";
-    },
-  2000
-);
+  document.querySelector(
+    ".slider-product-one-content-items-content"
+  ).style.right = index * 100 + "%";
+}, 2000);
 
 // ==================== api =======================
 
-// const api_url = 'https://632fc662591935f3c8851f34.mockapi.io/api/apiphone'
+const api_url = "https://632fc662591935f3c8851f34.mockapi.io/api/apiphone";
 
-// // Defining async function
-// var newdt
-// async function open(url) {
+// Defining async function
+var newdt;
+async function open(url) {
+  // Storing response
+  const response = await fetch(url);
 
-//     // Storing response
-//     const response = await fetch(url);
+  // Storing data in form of JSON
+  newdt = await response.json();
+  console.log(newdt);
+  // if (response) {
+  //   newdt = response
+  //   console.log(newdt)
+  let acb = document.getElementsById("box");
+  acb.innerHTML = newdt.map((item) => {
+    console.log(acb);
+    return `
 
-//     // Storing data in form of JSON
-//     newdt = await response.json();
-//     console.log(newdt);
-//     // if (response) {
-//     //   newdt = response
-//     //   console.log(newdt)
-//     let acb = document.getElementById("thp")
-// acb.innerHTML = newdt.map((item)=>{
-//   return `
-//   <img src="${item.img}" alt="">
-//   `
-// })
-// }
-// // Calling that async function
-// open(api_url);
+  <h1> hello world </h1>
+`;
+  });
+}
+// Calling that async function
+open(api_url);
 
 // ====================================================================
 
