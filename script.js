@@ -37,37 +37,109 @@ setInterval(function () {
   document.querySelector(
     ".slider-product-one-content-items-content"
   ).style.right = index * 100 + "%";
-}, 2000);
+}, 30000);
 
 // ==================== api =======================
 
-const api_url = "https://632fc662591935f3c8851f34.mockapi.io/api/apiphone";
+// const api_url = "https://632fc662591935f3c8851f34.mockapi.io/api/apiphone";
 
-// Defining async function
-var newdt;
-async function open(url) {
-  // Storing response
-  const response = await fetch(url);
+// // Defining async function
+// var newdt;
+// async function open(url) {
+//   // Storing response
+//   const response = await fetch(url);
 
-  // Storing data in form of JSON
-  newdt = await response.json();
-  console.log(newdt);
-  // if (response) {
-  //   newdt = response
-  //   console.log(newdt)
-  let acb = document.getElementsById("box");
-  acb.innerHTML = newdt.map((item) => {
-    console.log(acb);
-    return `
+//   // Storing data in form of JSON
+//   newdt = await response.json();
+//   console.log(newdt);
+//   // if (response) {
+//   //   newdt = response
+//     console.log(newdt)
+//   let acb = document.querySelector(".list-product-items");
+//   let html = "";
+//   newdt.forEach((item, index) => {
+//     console.log(index);
+//       // if(index < 5){
+//         let htmlinner = `
+//         <div class="list-product-item">
+//         <a href=""> <img src="${item.img}" alt=""> </a>
+//         <div class="list-product-item-text">
+//             <li>${item.name}</li>
+//             <li id="jsprice">${item.price}₫</li>
+//             <li>${item.star}<i class="fa-solid fa-star"></i>
+//             <span> (${item.numreview}) </span>
+//             </li>
+//         </div>
+//     </div>
+//   `;
+//   html += htmlinner;
+//       // }
+//   });
+//   acb.innerHTML = html;
+// }
+// // Calling that async function
 
-  <h1> hello world </h1>
-`;
-  });
-}
-// Calling that async function
-open(api_url);
+// ========================================== api hot =================
+document.addEventListener("DOMContentLoaded", () => {
+  const BASE_URL = "https://632fc662591935f3c8851f34.mockapi.io/api/apiphone";
 
-// ====================================================================
+  fetch(BASE_URL)
+    .then((response) => response.json())
+    .then((data) => {
+      console.log("Success:", data);
+      const products = document.querySelector(".list-product-items");
+      function showData(products, data) {
+        products.innerHTML = data.length
+          ? data
+              .map((item) => {
+                return `
+                      <div class="list-product-item">
+                      <a href=""> <img src="${item.img}" alt=""> </a>
+                      <div class="list-product-item-text">
+                          <li>${item.name}</li>
+                          <li class="jsprice">${item.price}₫</li>
+                          <li>${item.star}<i class="fa-solid fa-star"></i>
+                          <span> (${item.numreview}) </span>
+                          </li>
+                      </div>
+                  </div>
+                      `;
+              })
+              .join(" ")
+          : "<div>Dữ liệu trống</div>";
+      }
+      showData(products, data);
+
+      // thực hiện chức năng search
+
+      const input = document.querySelector(".inputx ");
+      input.addEventListener("keyup", (event) => {
+        const target = event.target;
+        const value = target.value;
+        const convertToLowerCase = value.toLowerCase();
+        const filterData = data.filter((item) =>
+          item.name.toLowerCase().includes(convertToLowerCase)
+        );
+        showData(products, filterData);
+      });
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+});
+// =========================================================================================
+
+const number = document.querySelector(".jsprice").innerHTML;
+
+// const number = 1000000;
+// document.write(number);
+console.log(number);
+
+document.write(
+  new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" }).format(
+    number
+  )
+);
 
 const addressbtn = document.querySelector("#address-form");
 

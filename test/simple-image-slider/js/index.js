@@ -31,30 +31,30 @@ $(document).ready(function(){
 	 //*> OPTIONAL SETTINGS
 	************************/
 	//automatic slider
-	// var autoSlider = setInterval(slideRight, 3000);
+	var autoSlider = setInterval(slideRight, 3000);
 	
-	// //for each slide 
-	// $.each($('#slider-wrap ul li'), function() { 
-	//    //set its color
-	//    var c = $(this).attr("data-color");
-	//    $(this).css("background",c);
+	//for each slide 
+	$.each($('#slider-wrap ul li'), function() { 
+	   //set its color
+	   var c = $(this).attr("data-color");
+	   $(this).css("background",c);
 	   
-	//    //create a pagination
-	//    var li = document.createElement('li');
-	//    $('#pagination-wrap ul').append(li);	   
-	// });
+	   //create a pagination
+	   var li = document.createElement('li');
+	   $('#pagination-wrap ul').append(li);	   
+	});
 	
 	//counter
-	// countSlides();
+	countSlides();
 	
 	//pagination
-	// pagination();
+	pagination();
 	
 	//hide/show controls/btns when hover
 	//pause automatic slide when hover
 	$('#slider-wrap').hover(
 	  function(){ $(this).addClass('active'); clearInterval(autoSlider); }, 
-	  function(){ $(this).removeClass('active'); autoSlider = setInterval(slideRight, 4000); }
+	  function(){ $(this).removeClass('active'); autoSlider = setInterval(slideRight, 3000); }
 	);
 	
 	
@@ -72,8 +72,8 @@ function slideLeft(){
 	$('#slider-wrap ul#slider').css('left', -(sliderWidth*pos)); 	
 	
 	//*> optional
-	// countSlides();
-	// pagination();
+	countSlides();
+	pagination();
 }
 
 
@@ -104,6 +104,3 @@ function pagination(){
 	$('#pagination-wrap ul li').removeClass('active');
 	$('#pagination-wrap ul li:eq('+pos+')').addClass('active');
 }
-		
-
-

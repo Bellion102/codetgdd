@@ -18,7 +18,7 @@ body {
   display: flex;
   justify-content: space-between;
   border-bottom: 1px solid #b3b3b3;
-  /* padding-bottom: 10px; */
+  padding-bottom: 10px;
 }
 
 .row-page-left {
@@ -28,7 +28,7 @@ body {
 
 .row-page-left-img {
   line-height: 0;
-  /* margin: 0px 15px; */
+  margin: 0px 15px;
   display: inline-block;
   vertical-align: middle;
 }
@@ -83,7 +83,7 @@ body {
 
   background-color: #1877F2;
   margin: 0px 4px;
-  /* padding: 0px 14px; */
+  padding: 0px 14px;
   border-radius: 3px;
 }
 
@@ -97,29 +97,31 @@ body {
   color: #ffffff;
 }
 
-
+.detail-top{
+  padding-bottom: 10px;
+}
 
 
 /* ========================= slider detail ========================= */
 #wrapper {
-  width: 100%;
+  width: 800px;
   /* margin: 20px auto; */
-  height: 500px;
+  height: 533px;
   position: relative;
   color: #fff;
   text-shadow: rgba(0, 0, 0, 0.1) 2px 2px 0px;
 }
 
 #slider-wrap {
-  width: 100%;
-  height: 400px;
+  width: 800px;
+  height: 533px;
   position: relative;
   overflow: hidden;
 }
 
 #slider-wrap ul#slider {
-  width: 100%;
-  height: 100%;
+  width: 800px;
+  height: 533px;
 
   position: absolute;
   top: 0;
@@ -129,8 +131,8 @@ body {
 #slider-wrap ul#slider li {
   float: left;
   position: relative;
-  width: 600px;
-  height: 400px;
+  width: 800px;
+  height: 533px;
 }
 
 #slider-wrap ul#slider li>div {
@@ -226,7 +228,7 @@ body {
 }
 
 #pagination-wrap ul {
-  width: 100%;
+  width: 800px;
 }
 
 
@@ -242,7 +244,7 @@ body {
 }
 
 #slider img {
-  width: 600px;
+  width: 800px;
   height: auto;
 }
 
