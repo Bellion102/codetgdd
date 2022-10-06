@@ -96,8 +96,8 @@ document.addEventListener("DOMContentLoaded", () => {
                       <div class="list-product-item">
                       <a href=""> <img src="${item.img}" alt=""> </a>
                       <div class="list-product-item-text">
-                          <li>${item.name}</li>
-                          <li class="jsprice">${item.price}₫</li>
+                          <li class="clname">${item.name}</li>
+                          <li class="jsprice"> ${parseInt(item.price).toLocaleString()}₫</li>
                           <li>${item.star}<i class="fa-solid fa-star"></i>
                           <span> (${item.numreview}) </span>
                           </li>
@@ -122,24 +122,52 @@ document.addEventListener("DOMContentLoaded", () => {
         );
         showData(products, filterData);
       });
+
+      const namex = document.querySelector(".clname").innerHTML;
+    console.log(namex);
+      namex.sort(function(a, b){return a-b});
+      // const sortBy = document.getElementById("sort")
+      // let sortData = [];
+      // const compareByName =  (objFirst, objSecond) => {
+      //   if(removeVietKey(objFirst.name) > removeVietKey(objSecond.name)){
+      //     return 1
+      //   } else if(removeVietKey(objFirst.name) < removeVietKey(objSecond.name)){
+      //     return -1
+      //   } return 0
+      // }
+      // if(sortBy){
+      //   sortBy.onchange = (event) =>{
+      //     console.log(event.target.value);
+      //     const {value} = event.target;
+      //     if(+value === 1 ){
+      //       sortData = [...data].sort(compareByName)
+      //     }else if(+value === 2){
+      //       sortData = [...data].sort(compareByName).reverse()
+      //     }else{
+      //       sortData = data 
+      //     }
+      //     element.innerHTML = mapDatas(sortData)
+      //   };
+      // }
+
+      // const sortedResponse = obj.data.DoctorsList.sort(function(a, b) { return parseInt(a.name) - parseInt(b.name) });
+      // console.log(sortedResphonse);
+
+
+
+      
     })
     .catch((error) => {
       console.error("Error:", error);
     });
+
+
+
+
+
 });
 // =========================================================================================
 
-const number = document.querySelector(".jsprice").innerHTML;
-
-// const number = 1000000;
-// document.write(number);
-console.log(number);
-
-document.write(
-  new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" }).format(
-    number
-  )
-);
 
 const addressbtn = document.querySelector("#address-form");
 
@@ -151,6 +179,9 @@ addressbtn.addEventListener("click", function () {
 addressclose.addEventListener("click", function () {
   document.querySelector(".address-form").style.display = "none";
 });
+// =========================================================================================
+
+
 
 // api 64 tỉnh thành
 
