@@ -80,34 +80,37 @@ setInterval(function () {
 // // Calling that async function
 
 // ========================================== api hot =================
+
+let dataProduct = null;
+const products = document.querySelector(".list-product-items");
+function showData(products, data) {
+  products.innerHTML = data.length
+    ? data
+        .map((item) => {
+          return `
+                <div class="list-product-item">
+                <a href=""> <img src="${item.img}" alt=""> </a>
+                <div class="list-product-item-text">
+                    <li class="clname">${item.name}</li>
+                    <li class="jsprice"> ${parseInt(
+                      item.price
+                    ).toLocaleString()}₫</li>
+                    <li>${item.star}<i class="fa-solid fa-star"></i>
+                    <span> (${item.numreview}) </span>
+                    </li>
+                </div>
+            </div>
+                `;
+        })
+        .join(" ")
+    : "<div>Dữ liệu trống</div>";
+}
 document.addEventListener("DOMContentLoaded", () => {
   const BASE_URL = "https://632fc662591935f3c8851f34.mockapi.io/api/apiphone";
 
   fetch(BASE_URL)
     .then((response) => response.json())
     .then((data) => {
-      console.log("Success:", data);
-      const products = document.querySelector(".list-product-items");
-      function showData(products, data) {
-        products.innerHTML = data.length
-          ? data
-              .map((item) => {
-                return `
-                      <div class="list-product-item">
-                      <a href=""> <img src="${item.img}" alt=""> </a>
-                      <div class="list-product-item-text">
-                          <li class="clname">${item.name}</li>
-                          <li class="jsprice"> ${parseInt(item.price).toLocaleString()}₫</li>
-                          <li>${item.star}<i class="fa-solid fa-star"></i>
-                          <span> (${item.numreview}) </span>
-                          </li>
-                      </div>
-                  </div>
-                      `;
-              })
-              .join(" ")
-          : "<div>Dữ liệu trống</div>";
-      }
       showData(products, data);
 
       // thực hiện chức năng search
@@ -122,10 +125,10 @@ document.addEventListener("DOMContentLoaded", () => {
         );
         showData(products, filterData);
       });
-
+      dataProduct = data;
       const namex = document.querySelector(".clname").innerHTML;
-    console.log(namex);
-      namex.sort(function(a, b){return a-b});
+      // namex.sort(function(a, b){return a-b});
+
       // const sortBy = document.getElementById("sort")
       // let sortData = [];
       // const compareByName =  (objFirst, objSecond) => {
@@ -144,30 +147,45 @@ document.addEventListener("DOMContentLoaded", () => {
       //     }else if(+value === 2){
       //       sortData = [...data].sort(compareByName).reverse()
       //     }else{
-      //       sortData = data 
+      //       sortData = data
       //     }
       //     element.innerHTML = mapDatas(sortData)
       //   };
       // }
-
       // const sortedResponse = obj.data.DoctorsList.sort(function(a, b) { return parseInt(a.name) - parseInt(b.name) });
       // console.log(sortedResphonse);
-
-
-
-      
     })
     .catch((error) => {
       console.error("Error:", error);
     });
-
-
-
-
-
 });
+function sort() {
+  let value = document.querySelector("#sort");
+  if (dataProduct && value.value == 1) {
+    let newData = dataProduct.sort((a, b) => {
+      if (a.name < b.name) {
+        return -1;
+      }
+      if (a.name > b.name) {
+        return 1;
+      }
+      return 0;
+    });
+    showData(products, newData);
+  } else if (dataProduct && value.value == 2) {
+    let newData = dataProduct.sort((a, b) => {
+      if (a.name < b.name) {
+        return 1;
+      }
+      if (a.name > b.name) {
+        return -1;
+      }
+      return 0;
+    });
+    showData(products, newData);
+  }
+}
 // =========================================================================================
-
 
 const addressbtn = document.querySelector("#address-form");
 
@@ -180,8 +198,6 @@ addressclose.addEventListener("click", function () {
   document.querySelector(".address-form").style.display = "none";
 });
 // =========================================================================================
-
-
 
 // api 64 tỉnh thành
 
