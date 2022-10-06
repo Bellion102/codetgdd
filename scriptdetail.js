@@ -61,7 +61,68 @@ $(document).ready(function(){
 
 });//DOCUMENT READY
 	
+document.addEventListener("DOMContentLoaded", () => {
+	const BASE_URL = "https://632fc662591935f3c8851f34.mockapi.io/api/apiphone";
+  
+	fetch(BASE_URL)
+	  .then((response) => response.json())
+	  .then((data) => {
 
+		// showData(products, data);
+  
+		// thực hiện chức năng search
+  
+		// const input = document.querySelector(".inputx ");
+		// input.addEventListener("keyup", (event) => {
+		//   const target = event.target;
+		//   console.log(target);
+		//   const value = target.value;
+		//   const convertToLowerCase = value.toLowerCase();
+		//   const filterData = data.filter((item) =>
+		// 	item.name.toLowerCase().includes(convertToLowerCase)
+		//   );
+		// //   showData(products, filterData);
+		// });
+		// dataProduct = data;
+		// const namex = document.querySelector(".clname").innerHTML;
+		// namex.sort(function(a, b){return a-b});
+  
+		// const sortBy = document.getElementById("sort")
+		// let sortData = [];
+		// const compareByName =  (objFirst, objSecond) => {
+		//   if(removeVietKey(objFirst.name) > removeVietKey(objSecond.name)){
+		//     return 1
+		//   } else if(removeVietKey(objFirst.name) < removeVietKey(objSecond.name)){
+		//     return -1
+		//   } return 0
+		// }
+		// if(sortBy){
+		//   sortBy.onchange = (event) =>{
+		//     console.log(event.target.value);
+		//     const {value} = event.target;
+		//     if(+value === 1 ){
+		//       sortData = [...data].sort(compareByName)
+		//     }else if(+value === 2){
+		//       sortData = [...data].sort(compareByName).reverse()
+		//     }else{
+		//       sortData = data
+		//     }
+		//     element.innerHTML = mapDatas(sortData)
+		//   };
+		// }
+		// const sortedResponse = obj.data.DoctorsList.sort(function(a, b) { return parseInt(a.name) - parseInt(b.name) });
+		// console.log(sortedResphonse);
+		// const dataDetail = 
+		const id = location.href.slice(34,35)
+		const dataDetail = data.filter((item)=>{
+			return item.id == id;
+		})
+		console.log(dataDetail) 
+	  })
+	  .catch((error) => {
+		console.error("Error:", error);
+	  });
+  });
 
 /***********
  SLIDE LEFT

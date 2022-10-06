@@ -80,16 +80,15 @@ setInterval(function () {
 // // Calling that async function
 
 // ========================================== api hot =================
-
 let dataProduct = null;
 const products = document.querySelector(".list-product-items");
 function showData(products, data) {
   products.innerHTML = data.length
     ? data
-        .map((item) => {
+        .map((item,index) => {
           return `
                 <div class="list-product-item">
-                <a href=""> <img src="${item.img}" alt=""> </a>
+                <a href="./detail.html#${item.id}"> <img src="${item.img}" alt=""> </a>
                 <div class="list-product-item-text">
                     <li class="clname">${item.name}</li>
                     <li class="jsprice"> ${parseInt(
