@@ -118,6 +118,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const input = document.querySelector(".inputx ");
       input.addEventListener("keyup", (event) => {
         const target = event.target;
+        console.log(target);
         const value = target.value;
         const convertToLowerCase = value.toLowerCase();
         const filterData = data.filter((item) =>
@@ -162,7 +163,9 @@ document.addEventListener("DOMContentLoaded", () => {
 function sort() {
   let value = document.querySelector("#sort");
   if (dataProduct && value.value == 1) {
-    let newData = dataProduct.sort((a, b) => {
+    let dataFilter = [...dataProduct]
+    let newData = dataFilter.sort((a, b) => {
+
       if (a.name < b.name) {
         return -1;
       }
@@ -173,7 +176,8 @@ function sort() {
     });
     showData(products, newData);
   } else if (dataProduct && value.value == 2) {
-    let newData = dataProduct.sort((a, b) => {
+    let dataFilter = [...dataProduct]
+    let newData = dataFilter.sort((a, b) => {
       if (a.name < b.name) {
         return 1;
       }
@@ -183,6 +187,10 @@ function sort() {
       return 0;
     });
     showData(products, newData);
+  } else if(dataProduct && value.value == 0) {
+    console.log(dataProduct);
+    showData(products, dataProduct)
+  
   }
 }
 // =========================================================================================
