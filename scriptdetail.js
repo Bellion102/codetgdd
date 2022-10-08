@@ -1,170 +1,353 @@
-//current position
 var pos = 0;
-//number of slides
-var totalSlides = $('#slider-wrap ul li').length;
-//get the slide width
-var sliderWidth = $('#slider-wrap').width();
+var totalSlides = $("#slider-wrap ul li").length;
+var sliderWidth = $("#slider-wrap").width();
+
+// ************************************************
+// Shopping Cart API
+// ************************************************
+
+var shoppingCart = (function () {
+  // =============================
+  // Private methods and propeties
+  // =============================
+  cart = [];
+
+  // Constructor
+  function Item(name, price, count,id) {
+    // console.log(name, price, count,id);
+    this.name = name;
+    this.price = price;
+    this.count = count;
+    this.id = id;
+  }
+
+  // Save cart
+  function saveCart() {
+    sessionStorage.setItem("shoppingCart", JSON.stringify(cart));
+
+    // console.log(cart)
+  }
+
+  // Load cart
+  function loadCart() {
+    cart = JSON.parse(sessionStorage.getItem("shoppingCart"));
+  }
+  if (sessionStorage.getItem("shoppingCart") != null) {
+    loadCart();
+  }
+
+  // =============================
+  // Public methods and propeties
+  // =============================
+  var obj = {};
+
+  // Add to cart
+  obj.addItemToCart = function (name, price, count,id) {
+    for (var item in cart) {
+      if (cart[item].id === id) {
+        cart[item].count++;
+        saveCart();
+        return;
+      }
+    }
+    var item = new Item(name, price, count,id);
+    cart.push(item);
+    saveCart();
+  };
+  // Set count from item
+  obj.setCountForItem = function (name, count,id) {
+    for (var i in cart) {
+      if (cart[i].id === id) {
+        cart[i].count = count;
+        break;
+      }
+    }
+  };
+  // Remove item from cart
+  obj.removeItemFromCart = function (id) {
+    for (var item in cart) {
+      if (cart[item].id === id) {
+        cart[item].count--;
+        if (cart[item].count === 0) {
+          cart.splice(item, 1);
+        }
+        break;
+      }
+    }
+    saveCart();
+  };
+
+  // Remove all items from cart
+  obj.removeItemFromCartAll = function (id) {
+    for (var item in cart) {
+      if (cart[item].id === id) {
+        cart.splice(item, 1);
+        break;
+      }
+    }
+    saveCart();
+  };
+
+  // Clear cart
+  obj.clearCart = function () {
+    cart = [];
+    saveCart();
+  };
+
+  // Count cart
+  obj.totalCount = function () {
+    var totalCount = 0;
+    for (var item in cart) {
+		console.log(cart[item].count)
+      totalCount += cart[item].count;
+    }
+    return totalCount;
+  };
+
+  // Total cart
+  obj.totalCart = function () {
+    var totalCart = 0;
+    for (var item in cart) {
+      totalCart += cart[item].price * cart[item].count;
+    }
+    return Number(totalCart.toFixed(2));
+  };
+
+  // List cart
+  obj.listCart = function () {
+    var cartCopy = [];
+    for (i in cart) {
+      item = cart[i];
+      itemCopy = {};
+      for (p in item) {
+        itemCopy[p] = item[p];
+      }
+      itemCopy.total = Number(item.price * item.count).toFixed(2);
+      cartCopy.push(itemCopy);
+    }
+	// console.log(cartCopy)
+    return cartCopy;
+  };
 
 
-$(document).ready(function(){
-	
-	
-	/*****************
-	 BUILD THE SLIDER
-	*****************/
-	//set width to be 'x' times the number of slides
-	$('#slider-wrap ul#slider').width(sliderWidth*totalSlides);
-	
-    //next slide 	
-	$('#next').click(function(){
-		slideRight();
-	});
-	
-	//previous slide
-	$('#previous').click(function(){
-		slideLeft();
-	});
-	
-	
-	
-	/*************************
-	 //*> OPTIONAL SETTINGS
-	************************/
-	//automatic slider
-	// var autoSlider = setInterval(slideRight, 3000);
-	
-	// //for each slide 
-	// $.each($('#slider-wrap ul li'), function() { 
-	//    //set its color
-	//    var c = $(this).attr("data-color");
-	//    $(this).css("background",c);
-	   
-	//    //create a pagination
-	//    var li = document.createElement('li');
-	//    $('#pagination-wrap ul').append(li);	   
-	// });
-	
-	//counter
-	// countSlides();
-	
-	//pagination
-	// pagination();
-	
-	//hide/show controls/btns when hover
-	//pause automatic slide when hover
-	$('#slider-wrap').hover(
-	  function(){ $(this).addClass('active'); clearInterval(autoSlider); }, 
-	  function(){ $(this).removeClass('active'); autoSlider = setInterval(slideRight, 4000); }
-	);
-	
-	
+  return obj;
+})();
 
-});//DOCUMENT READY
-	
+// *****************************************
+// Triggers / Events
+// *****************************************
+// Add item
+//   $('.add-to-cart').click(function(event) {
+//     event.preventDefault();
+//     var name = $(this).data('name');
+//     var price = Number($(this).data('price'));
+//     shoppingCart.addItemToCart(name, price, 1);
+//     displayCart();
+//   });
+
+// Clear items
+$(".clear-cart").click(function () {
+  shoppingCart.clearCart();
+  displayCart();
+});
+
+function displayCart() {
+  var cartArray = shoppingCart.listCart();
+  for (var i in cartArray){
+	// console.log(cartArray[i].id);
+  }
+  var output = "";
+  for (var i in cartArray) {
+    output +=
+      "<tr>" +
+      "<td>" +
+      cartArray[i].name +
+      "</td>" +
+      "<td>(" +
+      cartArray[i].price +
+      ")</td>" +
+      "<td><div class='input-group'><button class='minus-item input-group-addon btn btn-primary' data-id=" +
+      cartArray[i].id +
+      ">-</button>" +
+      "<input type='number' class='item-count form-control' data-id='" +
+      cartArray[i].id +
+      "' value='" +
+      cartArray[i].count +
+      "'>" +
+      "<button class='plus-item btn btn-primary input-group-addon' data-id='" +
+      cartArray[i].id +
+      "'>+</button></div></td>" +
+      "<td><button class='delete-item btn btn-danger' data-id=" +
+      cartArray[i].id +
+      ">X</button></td>" +
+      " = " +
+      "<td>" +
+      cartArray[i].total +
+      "</td>" +
+      "</tr>";
+  }
+  $(".show-cart").html(output);
+  $(".total-cart").html(shoppingCart.totalCart());
+  $(".total-count").html(shoppingCart.totalCount());
+}
+
+// Delete item button
+
+$(".show-cart").on("click", ".delete-item", function (event) {
+  var id = $(this).data("id");
+//   console.log(id);
+  shoppingCart.removeItemFromCartAll(id);
+  displayCart();
+});
+
+// -1
+$(".show-cart").on("click", ".minus-item", function (event) {
+  var id = $(this).data("id");
+  shoppingCart.removeItemFromCart(id);
+  displayCart();
+});
+// +1
+$(".show-cart").on("click", ".plus-item", function (event) {
+  var id = $(this).data("id");
+  shoppingCart.addItemToCart(1,2,3,id);
+  displayCart();
+});
+
+// Item count input
+$(".show-cart").on("change", ".item-count", function (event) {
+  var id = $(this).data("id");
+  var count = Number($(this).val());
+  shoppingCart.setCountForItem(id, count);
+  displayCart();
+});
+
+displayCart();
+
+$(".add-to-cart").click(function (event) {
+  event.preventDefault();
+  var name = $(this).data("name");
+  var price = Number($(this).data("price"));
+  var id = Number($(this).data("id"));
+  console.log(name, price, 1,id)
+  shoppingCart.addItemToCart(name, price, 1,id);
+  displayCart();
+});
+
 document.addEventListener("DOMContentLoaded", () => {
-	const BASE_URL = "https://632fc662591935f3c8851f34.mockapi.io/api/apiphone";
-  
-	fetch(BASE_URL)
-	  .then((response) => response.json())
-	  .then((data) => {
+  const BASE_URL = "https://632fc662591935f3c8851f34.mockapi.io/api/apiphone";
+  let buyBtn = document.querySelector(".add-to-cart");
+  fetch(BASE_URL)
+    .then((response) => response.json())
+    .then((data) => {
+      const id = location.href.slice(34, 36);
+      const dataDetail = data.find((item) => item.id == id);
+      if (dataDetail) {
+        buyBtn.setAttribute("data-name", dataDetail.name);
+        buyBtn.setAttribute("data-price", dataDetail.price);
+        buyBtn.setAttribute("data-id", dataDetail.id);
+		console.log(dataDetail.id);
+      }
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+});
 
-		// showData(products, data);
-  
-		// thực hiện chức năng search
-  
-		// const input = document.querySelector(".inputx ");
-		// input.addEventListener("keyup", (event) => {
-		//   const target = event.target;
-		//   console.log(target);
-		//   const value = target.value;
-		//   const convertToLowerCase = value.toLowerCase();
-		//   const filterData = data.filter((item) =>
-		// 	item.name.toLowerCase().includes(convertToLowerCase)
-		//   );
-		// //   showData(products, filterData);
-		// });
-		// dataProduct = data;
-		// const namex = document.querySelector(".clname").innerHTML;
-		// namex.sort(function(a, b){return a-b});
-  
-		// const sortBy = document.getElementById("sort")
-		// let sortData = [];
-		// const compareByName =  (objFirst, objSecond) => {
-		//   if(removeVietKey(objFirst.name) > removeVietKey(objSecond.name)){
-		//     return 1
-		//   } else if(removeVietKey(objFirst.name) < removeVietKey(objSecond.name)){
-		//     return -1
-		//   } return 0
-		// }
-		// if(sortBy){
-		//   sortBy.onchange = (event) =>{
-		//     console.log(event.target.value);
-		//     const {value} = event.target;
-		//     if(+value === 1 ){
-		//       sortData = [...data].sort(compareByName)
-		//     }else if(+value === 2){
-		//       sortData = [...data].sort(compareByName).reverse()
-		//     }else{
-		//       sortData = data
-		//     }
-		//     element.innerHTML = mapDatas(sortData)
-		//   };
-		// }
-		// const sortedResponse = obj.data.DoctorsList.sort(function(a, b) { return parseInt(a.name) - parseInt(b.name) });
-		// console.log(sortedResphonse);
-		// const dataDetail = 
-		const id = location.href.slice(34,35)
-		const dataDetail = data.filter((item)=>{
-			return item.id == id;
-		})
-		console.log(dataDetail) 
-	  })
-	  .catch((error) => {
-		console.error("Error:", error);
-	  });
-  });
+
+
+
 
 /***********
  SLIDE LEFT
 ************/
-function slideLeft(){
-	pos--;
-	if(pos==-1){ pos = totalSlides-1; }
-	$('#slider-wrap ul#slider').css('left', -(sliderWidth*pos)); 	
-	
-	//*> optional
-	// countSlides();
-	// pagination();
-}
+function slideLeft() {
+  pos--;
+  if (pos == -1) {
+    pos = totalSlides - 1;
+  }
+  $("#slider-wrap ul#slider").css("left", -(sliderWidth * pos));
 
+  //*> optional
+  // countSlides();
+  // pagination();
+}
 
 /************
  SLIDE RIGHT
 *************/
-function slideRight(){
-	pos++;
-	if(pos==totalSlides){ pos = 0; }
-	$('#slider-wrap ul#slider').css('left', -(sliderWidth*pos)); 
-	
-	//*> optional 
-	countSlides();
-	pagination();
+function slideRight() {
+  pos++;
+  if (pos == totalSlides) {
+    pos = 0;
+  }
+  $("#slider-wrap ul#slider").css("left", -(sliderWidth * pos));
+
+  //*> optional
+  countSlides();
+  pagination();
 }
 
-
-
-	
 /************************
  //*> OPTIONAL SETTINGS
 ************************/
-function countSlides(){
-	$('#counter').html(pos+1 + ' / ' + totalSlides);
+function countSlides() {
+  $("#counter").html(pos + 1 + " / " + totalSlides);
 }
 
-function pagination(){
-	$('#pagination-wrap ul li').removeClass('active');
-	$('#pagination-wrap ul li:eq('+pos+')').addClass('active');
+function pagination() {
+  $("#pagination-wrap ul li").removeClass("active");
+  $("#pagination-wrap ul li:eq(" + pos + ")").addClass("active");
 }
-		
+$(document).ready(function () {
+  /*****************
+	 BUILD THE SLIDER
+	*****************/
+  //set width to be 'x' times the number of slides
+  $("#slider-wrap ul#slider").width(sliderWidth * totalSlides);
 
+  //next slide
+  $("#next").click(function () {
+    slideRight();
+  });
 
+  //previous slide
+  $("#previous").click(function () {
+    slideLeft();
+  });
+
+  /*************************
+	 //*> OPTIONAL SETTINGS
+	************************/
+  //automatic slider
+  var autoSlider = setInterval(slideRight, 3000);
+
+  // //for each slide
+  // $.each($('#slider-wrap ul li'), function() {
+  //    //set its color
+  //    var c = $(this).attr("data-color");
+  //    $(this).css("background",c);
+
+  //    //create a pagination
+  //    var li = document.createElement('li');
+  //    $('#pagination-wrap ul').append(li);
+  // });
+
+  //counter
+  // countSlides();
+
+  //pagination
+  // pagination();
+
+  //hide/show controls/btns when hover
+  //pause automatic slide when hover
+  $("#slider-wrap").hover(
+    function () {
+      $(this).addClass("active");
+      clearInterval(autoSlider);
+    },
+    function () {
+      $(this).removeClass("active");
+      autoSlider = setInterval(slideRight, 4000);
+    }
+  );
+});
